@@ -23,7 +23,7 @@ const processes = {
 const Container = () => {
 
     const [algorithm, setAlgorithm] = useState("FCFS");
-    const [process, setProcess] = useState("1,2;2,3");
+    const [process, setProcess] = useState("0,5;6,9;7,5;15,10");
 
     const alghorithmChangeHandler = (algorithm) => {
         setAlgorithm(algorithm)
@@ -33,13 +33,19 @@ const Container = () => {
         setProcess(process);
     };
 
+    const resetFields = () => {
+        console.log("reset");
+        setAlgorithm("FCFS");
+        setProcess("0,5;6,9;7,5;15,10");
+    };
     return (
         <div>
             <h1>Graafilise kasutajaliidesega simulaator protsessoriaja planeerimise algoritmide töö
                 visualiseerimiseks</h1>
             <ControllerContainer>
-                <DataController processes={processes} processHandler={processChangeHandler}/>
-                <ButtonController algorithms={algorithms} algorithmHandler={alghorithmChangeHandler}/>
+                <DataController processes={processes} processHandler={processChangeHandler} selected={process}/>
+                <ButtonController algorithms={algorithms} algorithmHandler={alghorithmChangeHandler}
+                                  reset={resetFields}/>
             </ControllerContainer>
             <Display process={process} algorithm={algorithm}/>
         </div>
