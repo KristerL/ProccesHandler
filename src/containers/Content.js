@@ -13,10 +13,11 @@ const algorithms = ["FCFS", "FCFS2", "SJF", "RR"];
 const processes = {
     Esimene: "0,5;6,9;7,5;15,10",
     Teine: "0,2;1,4;12,4;15,5;21,10",
-    Kolmas: "5,6;6,9;11,3;12,7",
+    Kolmas: "5,6;6,4;11,3;12,7",
     Neljas: "1,10;3,3;4,1;8,6;15,2",
     Viies: "1,8;3,5;4,3;12,1;19,1",
-    Kuues: "0,24;4,3;7,3"
+    Kuues: "0,24;4,3;7,3",
+    Seitsmes: "0,7;2,4;4,1;5,4",
 };
 
 const Container = () => {

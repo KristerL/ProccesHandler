@@ -15,11 +15,9 @@ const Display = ({process, algorithm}) => {
             SJF(arrivalTimes, waitTimes);
         } else if (algorithm === "FCFS2") {
             FCFS2(arrivalTimes, waitTimes);
-        } else if (algorithm = "RR") {
+        } else if (algorithm === "RR") {
             RR(arrivalTimes, waitTimes);
         }
-
-        //waitTimes.unshift(arrivalTimes[0]);
     }, [process, algorithm]);
 
 
@@ -159,7 +157,7 @@ const Display = ({process, algorithm}) => {
         }
         setVisualize(path);
         buildIndexes(path);
-        setAverage(waitTime / (arrivalTimes.length))
+        setAverage((waitTime / (arrivalTimes.length)).toFixed(2))
     };
 
     const RR = (arrivalTimes, waitTimes) => {
@@ -174,7 +172,6 @@ const Display = ({process, algorithm}) => {
         let waitTime = 0;
         const rr = 2;
         while (true) {
-            console.log("Index", i, "Task", workingName, "Worked", currentWorkTime, "Left", workingTime, "running", isRunning, "Execorder", executionOrder);
             if (arrives.length === 0 && executionOrder.length === 0 && !isRunning) {
                 break;
             }
@@ -185,21 +182,22 @@ const Display = ({process, algorithm}) => {
                     waitTime: waitTimes[arrivalTimes.findIndex(el => el === i)]
                 });
                 arrives.shift();
-                console.log("added to exec", "P" + arrivalTimes.findIndex(el => el === i))
+
             }
 
             workingTime--;
             currentWorkTime++;
+            waitTime += executionOrder.length;
             if (workingTime === 0) {
                 isRunning = false;
                 path.push({name: workingName, workingTime: currentWorkTime});
                 if (executionOrder.length > 0) {
-                    console.log("previos task ended, adding new", executionOrder[0]);
                     let newTask = executionOrder.shift();
                     workingName = newTask.name;
                     workingTime = newTask.waitTime;
                     currentWorkTime = 0;
-                    isRunning = true
+                    isRunning = true;
+                    waitTime--;
                 } else {
                     workingName = "PAUS";
                     currentWorkTime = 0;
@@ -207,7 +205,6 @@ const Display = ({process, algorithm}) => {
 
             }
 
-            console.log("I", i, isRunning, currentWorkTime, executionOrder.length);
             if (isRunning && (currentWorkTime % rr === 0 && currentWorkTime !== 0) && executionOrder.length > 0) {
                 let newTask = executionOrder.shift();
                 path.push({name: workingName, workingTime: currentWorkTime});
@@ -225,16 +222,16 @@ const Display = ({process, algorithm}) => {
                     workingName = newTask.name;
                     workingTime = newTask.waitTime;
                     currentWorkTime = 0;
-                    isRunning = true
+                    isRunning = true;
+                    waitTime--;
                 }
             }
             i++;
         }
 
-        console.log(path);
         setVisualize(path);
         buildIndexes(path);
-        setAverage(waitTime / (arrivalTimes.length))
+        setAverage((waitTime / (arrivalTimes.length)).toFixed(2))
     };
 
     const FCFS2 = (arrivalTimes, waitTimes) => {
@@ -318,11 +315,11 @@ const Display = ({process, algorithm}) => {
             }
             currentWorkTime++;
             i++;
+            waitTime += highPriority.length + lowPriority.length;
         }
-        console.log(path);
         setVisualize(path);
         buildIndexes(path);
-        setAverage(waitTime / (arrivalTimes.length))
+        setAverage((waitTime / (arrivalTimes.length)).toFixed(2))
     };
 
     const buildIndexes = (path) => {
@@ -332,7 +329,6 @@ const Display = ({process, algorithm}) => {
             currentSum += el.workingTime;
             indexes.push(currentSum);
         });
-        console.log(indexes);
         setTimeIndexes(indexes);
     };
 
